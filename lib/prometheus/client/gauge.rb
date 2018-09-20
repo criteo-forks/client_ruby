@@ -17,7 +17,9 @@ module Prometheus
           raise ArgumentError, 'value must be a number'
         end
 
-        @values[label_set_for(labels)] = value.to_f
+        synchronize do
+          @values[label_set_for(labels)] = value.to_f
+        end
       end
 
       # Increments Gauge value by 1 or adds the given value to the Gauge.
