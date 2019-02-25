@@ -39,6 +39,13 @@ module Prometheus
         end
       end
 
+      def delete(labels)
+        @validator.valid?(labels)
+        synchronize do
+          @values.delete(labels)
+        end
+      end
+
       private
 
       def default
