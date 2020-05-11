@@ -29,6 +29,7 @@ module Prometheus
         @metrics_prefix = options[:metrics_prefix] || 'http_server'
         @counter_lb = options[:counter_label_builder] || COUNTER_LB
         @duration_lb = options[:duration_label_builder] || DURATION_LB
+        @duration_buckets = options[:duration_buckets] || Client::Histogram::DEFAULT_BUCKETS
 
         init_request_metrics
         init_exception_metrics
@@ -69,6 +70,8 @@ module Prometheus
         @durations = @registry.histogram(
           :"#{@metrics_prefix}_request_duration_seconds",
           'The HTTP response duration of the Rack application.',
+          {},
+          @duration_buckets
         )
       end
 
